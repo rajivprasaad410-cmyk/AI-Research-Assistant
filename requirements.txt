@@ -8,3 +8,4 @@ chromadb
 pymupdf4llm
 python-dotenv
 torch
+nltk

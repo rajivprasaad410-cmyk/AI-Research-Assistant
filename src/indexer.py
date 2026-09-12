@@ -5,6 +5,20 @@ from typing import Optional
 # Ensure project root is in the Python search path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+# --- Python 3.14 Path Security Fix ---
+import nltk
+nltk_dir = os.path.join(os.path.expanduser("~"), "nltk_data")
+os.makedirs(nltk_dir, exist_ok=True)
+nltk.data.path.insert(0, nltk_dir)
+
+try:
+    nltk.download("stopwords", download_dir=nltk_dir, quiet=True)
+    nltk.download("punkt", download_dir=nltk_dir, quiet=True)
+    nltk.download("punkt_tab", download_dir=nltk_dir, quiet=True)
+except Exception:
+    pass
+# -------------------------------------
+
 import chromadb
 from llama_index.core import VectorStoreIndex, StorageContext
 from llama_index.core.node_parser import SentenceSplitter
@@ -45,7 +59,6 @@ def index_pdf_document(pdf_path: str, original_filename: Optional[str] = None):
     storage_context = StorageContext.from_defaults(vector_store=vector_store)
     embed_model = get_embedding_model()
 
-    # Split text into 512-token chunks with 50-token overlap to maintain context
     transformations = [
         SentenceSplitter(chunk_size=512, chunk_overlap=50)
     ]
