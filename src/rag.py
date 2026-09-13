@@ -20,7 +20,7 @@ from src.indexer import get_embedding_model, DB_DIR, COLLECTION_NAME
 
 
 def get_groq_api_key() -> str:
-    """Retrieves the Groq API key from Streamlit Cloud Secrets or local .env,"""
+    """Retrieves the Groq API key from Streamlit Cloud Secrets or local .env."""
     # 1. Check Streamlit secrets first (Streamlit Cloud deployment)
     try:
         import streamlit as st
@@ -41,7 +41,6 @@ def get_groq_api_key() -> str:
 
 def get_rag_query_engine(similarity_top_k: int = 3):
     """Initializes and returns a production-grade LlamaIndex QueryEngine
-
     connected to ChromaDB with precise citation prompting.
     """
     api_key = get_groq_api_key()
@@ -53,12 +52,12 @@ def get_rag_query_engine(similarity_top_k: int = 3):
     # Set in os.environ for internal SDK compatibility
     os.environ["GROQ_API_KEY"] = api_key
 
-    # Initialize Groq LLM
+    # Initialize Groq LLM with llama-3.3-70b-versatile (high throughput, no reasoning-token cutoff)
     llm = Groq(
-        model="qwen/qwen3.6-27b",
+        model="llama-3.3-70b-versatile",
         api_key=api_key,
         temperature=0.1,
-        max_tokens=1024,
+        max_tokens=2048,
     )
 
     # Initialize ChromaDB persistent connection
