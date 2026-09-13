@@ -53,6 +53,7 @@ def get_rag_query_engine(similarity_top_k: int = 3):
     os.environ["GROQ_API_KEY"] = api_key
 
     # Initialize Groq LLM with llama-3.3-70b-versatile (high throughput, no reasoning-token cutoff)
+   # Initialize Groq LLM with a verified Groq production model
     llm = Groq(
         model="llama-3.3-70b-versatile",
         api_key=api_key,
