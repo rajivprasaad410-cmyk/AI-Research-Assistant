@@ -46,8 +46,9 @@ def get_rag_query_engine(similarity_top_k: int = 3):
     os.environ["GROQ_API_KEY"] = api_key
 
     # Production LLM on Groq (no reasoning-token exhaustion)
+# Initialize Groq LLM with active production model
     llm = Groq(
-        model="llama-3.3-70b-versatile",
+        model="openai/gpt-oss-120b",
         api_key=api_key,
         temperature=0.1,
         max_tokens=2048,
